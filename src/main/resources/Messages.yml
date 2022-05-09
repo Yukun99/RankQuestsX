@@ -1,0 +1,81 @@
+#Placeholders:
+#- %player% for player's display name
+#- %rank% for rank name with colour codes
+#- %amount% for amount of items received.
+####################
+# General messages #
+####################
+#Prefix before all messages.
+#Bukkit colour codes supported.
+Prefix: '&bRank&eQuests&f >> &7'
+#Message sent if player's inventory is full when receiving an item from the plugin.
+Full: '&cYour inventory is full! Please empty out a slot, then use /rankquest redeem!'
+#Whether to use player nicknames instead of real names.
+UseNicks: true
+
+##################
+# Quest messages #
+##################
+Quest:
+  #Message sent when player receives a rank quest.
+  #usable placeholders: %rank%, %amount%
+  Receive: '&7You have received %amount% %rank% &bQuest Item(s)&7.'
+  #Warnings for when the player cannot start rank quests or when player tries to move the rank quest item.
+  #Start, Stack, Region warnings will be checked in the order as shown here in the config.
+  Warnings:
+    #Message sent if player tries to start a rank quest while another is ongoing.
+    Start: '&cYou may only start 1 &bRank Quest&c at a time.'
+    #Message sent if player has more than 1 stacked RankQuest in hand.
+    Stack: '&cPlease only have 1 &bRank Quest&c in your hand!'
+    #Message sent if player is not in the correct region when starting quest.
+    Region: '&cYou need to be in the &bWarzone&r&c to use this item!'
+    #Message sent if player tries to move quest item in their inventory while doing the quest.
+    Move: '&cYou may not move the &bRank Quest&c in your inventory while the quest is ongoing!'
+    #Message sent if player tries to drop the quest item while doing the quest.
+    Drop: '&cYou may not drop the &bRank Quest&c while the quest is ongoing!'
+    #Message sent if player tries to fly while doing the quest.
+    #Only sent if DisableFly option is true in Config.yml.
+    Fly: '&cYou may not fly while the quest is ongoing!'
+
+
+#########################
+# Announcement messages #
+#########################
+Announcement:
+  #Message sent to the player that starts the quest.
+  #usable placeholders: %rank%, %player%
+  Begin:
+    - ''
+    - '&b&l*** &l%rank% &b&lQUEST STARTED ***'
+    - '&7You have started a %rank% &bQuest&7! Survive until the'
+    - '&7timer on your &bRank Quest Item &7reaches &c<0s> &7to claim your'
+    - '%rank% &bVoucher&7!'
+    - ''
+  #Message broadcast to all other players when quest starts.
+  #usable placeholders: %rank%, %player%
+  BeginAll:
+    - ''
+    - '&b&l*** &l%rank% &b&lQUEST STARTED BY %player%***'
+    - '&7%player% has started a %rank% &bQuest&7! Find him/her in the'
+    - '&c&lWARZONE&r&7 before the &bRank Quest Item &7reaches &c<0s> to have a'
+    - '&7shot at getting his %rank% &bQuest Item&7!'
+    - ''
+  #Message sent to the player when quest is completed.
+  #usable placeholders: %rank%
+  Complete:
+    - '&aYou have completed a %rank% quest! Congratulations!'
+  #Message broadcast to all other players when quest is completed.
+  #usable placeholders: %rank%, %player%
+  CompleteAll:
+    - '&a%player% has completed a %rank% &bRank Quest&a! Congratulations!'
+
+####################
+# Voucher messages #
+####################
+Voucher:
+  #Message sent when player receives a voucher.
+  #usable placeholders: %rank%, %amount%
+  Receive: '&7You have received %amount% %rank% &bVoucher(s)&7.'
+  #Message sent when voucher is used.
+  #usable placeholders: %rank%
+  Use: 'You have used a %rank% &bVoucher&7!'

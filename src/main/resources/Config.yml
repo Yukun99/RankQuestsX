@@ -1,0 +1,8 @@
+###################
+# General options #
+###################
+#Whether to drop the item on disconnect.
+#If not dropped, the rank quest will simply be put back into the player's inventory.
+DropOnDC: true
+#Whether to prevent players from flying when they are doing the rank quest.
+DisableFly: true

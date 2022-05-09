@@ -1,0 +1,20 @@
+#This file stores all the quests that are unredeemed by players.
+#Do not edit this unless you know what you're doing.
+#I have provided the format commented out for you but I suggest just leaving this file alone.
+#I will NOT provide support for any configuration errors resulting from editing this file, I will simply ask you to delete it.
+#################
+# EXAMPLE ENTRY #
+#################
+#UUID of player that has unredeemed quests.
+#fc46954d-76bb-4aa9-81a0-e560950440d2:
+#  #Rank quests that are unredeemed.
+#  Quests:
+#    #Format is "Rank: Amount"
+#    VIP: 5
+#    MVP: 1
+#  #Vouchers that are unredeemed.
+#  Vouchers:
+#    #Format is "Rank: Amount"
+#    VIP: 2
+#    MVP: 10
+{ }
