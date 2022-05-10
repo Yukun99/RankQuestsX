@@ -3,6 +3,7 @@ package me.yukun.rankquests.commands;
 import me.yukun.rankquests.config.Config;
 import me.yukun.rankquests.config.Messages;
 import me.yukun.rankquests.config.Quests;
+import me.yukun.rankquests.config.Redeems;
 import org.bukkit.command.CommandSender;
 
 public class ReloadCommand extends AbstractCommand {
@@ -15,7 +16,7 @@ public class ReloadCommand extends AbstractCommand {
     Config.reload();
     Messages.reload();
     Quests.reload();
-    // TODO - REDEEMS AND LOGGERS STUFF
+    Redeems.reload();
     Messages.sendReloaded(super.sender);
   }
 }

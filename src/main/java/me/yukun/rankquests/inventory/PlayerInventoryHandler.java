@@ -14,8 +14,8 @@ public class PlayerInventoryHandler {
   }
 
   /**
-   * Gets amount of item that overflows when given to the player.
-   * If inventory can receive all of the item, then 0 is returned.
+   * Gets amount of item that overflows when given to the player. If inventory can receive all of
+   * the item, then 0 is returned.
    *
    * @param player Player to check given item for.
    * @param item   Item to be given to the player.
@@ -23,10 +23,12 @@ public class PlayerInventoryHandler {
    */
   public static int getInventoryOverflowAmount(Player player, ItemStack item) {
     int overflow = item.getAmount();
-    if (player.getInventory().firstEmpty() != -1) {
-      return 0;
-    }
-    for (ItemStack inventoryItem : player.getInventory().getContents()) {
+    for (int slot = 0; slot < 36; slot++) {
+      ItemStack inventoryItem = player.getInventory().getItem(slot);
+      if (inventoryItem == null) {
+        overflow -= 64;
+        continue;
+      }
       if (!inventoryItem.isSimilar(item)) {
         continue;
       }
@@ -34,10 +36,7 @@ public class PlayerInventoryHandler {
         return 0;
       }
       overflow -= 64 - inventoryItem.getAmount();
-      if (overflow <= 0) {
-        return 0;
-      }
     }
-    return overflow;
+    return Math.max(overflow, 0);
   }
 }

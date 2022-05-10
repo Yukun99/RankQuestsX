@@ -3,10 +3,10 @@ package me.yukun.rankquests.config;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
-  private static final FileConfiguration configFile = FileManager.getInstance().config;
+  private static FileConfiguration configFile = FileManager.getInstance().config;
 
   public static void reload() {
-    FileManager.getInstance().reloadConfig();
+    configFile = FileManager.getInstance().reloadConfig();
   }
 
   private static boolean getBoolean(String path) {

@@ -8,7 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class Messages {
-  private static final FileConfiguration messageFile = FileManager.getInstance().messages;
+  private static FileConfiguration messageFile = FileManager.getInstance().messages;
   // Command Help Messages
   private static final String HELP_HEADER = "&b&l==========RankQuests Commands==========";
   private static final String HELP_HEADER2 =
@@ -27,7 +27,7 @@ public class Messages {
   private static final String QUEST_DURATION = "Duration: %time% sec";
   private static final String QUEST_FOOTER = "-------------------";
   // Command Reply Messages
-  private static final String SENDER_NOT_PLAYER = "&cCommand sender must be a player!";
+  private static final String INVALID_SENDER = "&cCommand sender must be a player!";
   private static final String INVALID_AMOUNT = "&cSpecified amount must be number from 1 to 64!";
   private static final String INVALID_PLAYER = "&cTarget player does not exist or is not online!";
   private static final String RELOADED = "&aConfiguration files reloaded!";
@@ -52,7 +52,7 @@ public class Messages {
   private static String VOUCHER_USE = getString("Voucher.Use");
 
   public static void reload() {
-    FileManager.getInstance().reloadMessages();
+    messageFile = FileManager.getInstance().reloadMessages();
     PREFIX = getString("Prefix");
     INVENTORY_FULL = getString("Full");
     USE_NICKS = getBoolean("UseNicks");
@@ -197,19 +197,23 @@ public class Messages {
     sender.sendMessage(TextFormatter.color(QUEST_FOOTER));
   }
 
-  public static void sendSenderNotPlayer(CommandSender sender) {
-    sender.sendMessage(TextFormatter.color(PREFIX + SENDER_NOT_PLAYER));
-  }
-
-  public static void sendInvalidAmount(CommandSender sender) {
-    sender.sendMessage(TextFormatter.color(PREFIX + INVALID_AMOUNT));
-  }
-
-  public static void sendInvalidPlayer(CommandSender sender) {
-    sender.sendMessage(TextFormatter.color(PREFIX + INVALID_PLAYER));
-  }
-
   public static void sendReloaded(CommandSender sender) {
     sender.sendMessage(TextFormatter.color(PREFIX + RELOADED));
+  }
+
+  public static void sendError(CommandSender sender, ErrorType errorType) {
+    sender.sendMessage(TextFormatter.color(PREFIX + errorType.message));
+  }
+
+  public enum ErrorType {
+    SENDER(INVALID_SENDER),
+    AMOUNT(INVALID_AMOUNT),
+    PLAYER(INVALID_PLAYER);
+
+    private final String message;
+
+    ErrorType(String message) {
+      this.message = message;
+    }
   }
 }

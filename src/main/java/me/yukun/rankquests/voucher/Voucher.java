@@ -3,6 +3,7 @@ package me.yukun.rankquests.voucher;
 import java.util.List;
 import me.yukun.rankquests.config.Messages;
 import me.yukun.rankquests.config.Quests;
+import me.yukun.rankquests.config.Redeems;
 import me.yukun.rankquests.exception.InvalidMaterialException;
 import me.yukun.rankquests.inventory.PlayerInventoryHandler;
 import org.bukkit.Bukkit;
@@ -45,7 +46,7 @@ public class Voucher {
    * @param amount Amount of voucher(s) to be given.
    * @param slot   Slot to insert voucher(s) into.
    */
-  public void giveVoucher(Player player, String rank, int amount, Integer slot) {
+  public static void giveVoucher(Player player, String rank, int amount, Integer slot) {
     try {
       ItemStack voucher = Quests.getVoucherItem(rank, amount);
       if (slot != null) {
@@ -53,13 +54,39 @@ public class Voucher {
         Messages.sendVoucherReceive(player, rank, amount);
         return;
       }
-      if (PlayerInventoryHandler.getInventoryOverflowAmount(player, voucher) == 0) {
-        player.getInventory().addItem(voucher);
-        Messages.sendVoucherReceive(player, rank, amount);
-      } else {
-        // TODO - REDEEMS STUFF
+      int overflow = PlayerInventoryHandler.getInventoryOverflowAmount(player, voucher);
+      int remain = amount - overflow;
+      Messages.sendVoucherReceive(player, rank, remain);
+      if (overflow != 0) {
+        Redeems.addVoucher(player, rank, overflow);
+        voucher.setAmount(remain);
         Messages.sendInventoryFull(player);
       }
+      player.getInventory().addItem(voucher);
+    } catch (InvalidMaterialException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Gives a player a specified number of voucher items from the player's possible redeemed items.
+   *
+   * @param player Player to give specified voucher(s) to.
+   * @param rank   Rank of voucher(s) to be given.
+   * @param amount Amount of voucher(s) to be given.
+   */
+  public static void giveRedeemedVoucher(Player player, String rank, int amount) {
+    try {
+      ItemStack voucher = Quests.getVoucherItem(rank, amount);
+      int overflow = PlayerInventoryHandler.getInventoryOverflowAmount(player, voucher);
+      int remain = amount - overflow;
+      Messages.sendVoucherReceive(player, rank, remain);
+      if (overflow != 0) {
+        Redeems.setVoucher(player, rank, overflow);
+        voucher.setAmount(remain);
+        Messages.sendInventoryFull(player);
+      }
+      player.getInventory().addItem(voucher);
     } catch (InvalidMaterialException e) {
       e.printStackTrace();
     }

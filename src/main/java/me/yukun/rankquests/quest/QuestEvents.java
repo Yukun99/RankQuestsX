@@ -5,6 +5,7 @@ import me.yukun.rankquests.config.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -19,17 +20,16 @@ import org.bukkit.inventory.PlayerInventory;
 public class QuestEvents implements Listener {
   @EventHandler
   public void questStartListener(PlayerInteractEvent e) {
+    if (!e.getAction().equals(Action.RIGHT_CLICK_AIR)
+        && !e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+      return;
+    }
     Player player = e.getPlayer();
     ItemStack questItem = player.getInventory().getItemInMainHand();
     RankQuest rankQuest = RankQuest.getRankQuestFromItem(questItem, player);
     int slot = player.getInventory().getHeldItemSlot();
     if (rankQuest == null) {
-      questItem = player.getInventory().getItemInOffHand();
-      rankQuest = RankQuest.getRankQuestFromItem(questItem, player);
-      if (rankQuest == null) {
-        return;
-      }
-      slot = 45;
+      return;
     }
     if (RankQuest.isDoingRankQuest(player)) {
       Messages.sendQuestWarningsStart(player);
@@ -123,13 +123,10 @@ public class QuestEvents implements Listener {
   @EventHandler
   public void questPlayerDisconnectListener(PlayerQuitEvent e) {
     Player player = e.getPlayer();
-    if (!Config.dropOnDC()) {
-      return;
-    }
     if (!RankQuest.isDoingRankQuest(player)) {
       return;
     }
-    RankQuest.interruptQuest(player, true);
+    RankQuest.interruptQuest(player, Config.dropOnDC());
   }
 
   @EventHandler
@@ -138,7 +135,6 @@ public class QuestEvents implements Listener {
     if (!RankQuest.isDoingRankQuest(player)) {
       return;
     }
-
     RankQuest.interruptQuest(player, true);
   }
 }

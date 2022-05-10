@@ -12,10 +12,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class Quests {
-  private static final FileConfiguration questsFile = FileManager.getInstance().quests;
+  private static FileConfiguration questsFile = FileManager.getInstance().quests;
 
   public static void reload() {
-    FileManager.getInstance().reloadQuests();
+    questsFile = FileManager.getInstance().reloadQuests();
     RankQuest.onEnable();
   }
 
@@ -55,7 +55,7 @@ public class Quests {
     }
     Material material = getQuestItemType(rank);
     if (material == null) {
-      throw new InvalidMaterialException("Quests.yml", "rank" + ".ItemType");
+      throw new InvalidMaterialException("Quests.yml", rank + ".ItemType");
     }
     ItemStack questItem = new ItemStack(material, amount);
     setQuestItemMeta(questItem, rank, player);
@@ -66,7 +66,7 @@ public class Quests {
       throws InvalidMaterialException {
     Material material = getQuestItemType(rank);
     if (material == null) {
-      throw new InvalidMaterialException("Quests.yml", "rank" + ".ItemType");
+      throw new InvalidMaterialException("Quests.yml", rank + ".ItemType");
     }
     ItemStack cdQuestItem = new ItemStack(material, 1);
     setCdQuestItemMeta(cdQuestItem, rank, player, time);
@@ -76,7 +76,7 @@ public class Quests {
   public static ItemStack getVoucherItem(String rank, int amount) throws InvalidMaterialException {
     Material material = getVoucherItemType(rank);
     if (material == null) {
-      throw new InvalidMaterialException("Quests.yml", "rank" + ".Voucher.ItemType");
+      throw new InvalidMaterialException("Quests.yml", rank + ".Voucher.ItemType");
     }
     ItemStack voucherItem = new ItemStack(material, amount);
     setVoucherItemMeta(voucherItem, rank);

@@ -1,5 +1,6 @@
 package me.yukun.rankquests;
 
+import java.util.Objects;
 import me.yukun.rankquests.commands.CommandHandler;
 import me.yukun.rankquests.config.FileManager;
 import me.yukun.rankquests.quest.QuestEvents;
@@ -18,28 +19,13 @@ public class Main extends JavaPlugin implements Listener {
     return rankQuests;
   }
 
-  //  @EventHandler
-  //  public void devDebugEvent(PlayerInteractEvent e) {
-  //    Player debugPlayer = e.getPlayer();
-  //    try {
-  //      if (e.getPlayer().getInventory().getItemInMainHand().isSimilar(Quests.getQuestItem
-  //      ("VIP", 1,
-  //          debugPlayer))) {
-  //        RankQuest.nameRankQuestMap.get("VIP").startQuest(debugPlayer,
-  //            debugPlayer.getInventory().getHeldItemSlot());
-  //      }
-  //    } catch (InvalidMaterialException ex) {
-  //      ex.printStackTrace();
-  //    }
-  //  }
-
   @Override
   public void onEnable() {
     // Setting up general stuff
     FileManager.createInstance(this);
     RankQuest.onEnable();
     rankQuests = Bukkit.getPluginManager().getPlugin("RankQuests");
-    getCommand("rankquest").setExecutor(new CommandHandler());
+    Objects.requireNonNull(getCommand("rankquest")).setExecutor(new CommandHandler());
 
     // Setting up listeners
     PluginManager pm = Bukkit.getServer().getPluginManager();

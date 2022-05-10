@@ -4,10 +4,12 @@ import me.yukun.rankquests.config.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class CommandHandler implements CommandExecutor {
   @Override
-  public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+  public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command,
+                           @NonNull String label, String[] args) {
     if (args.length == 0) {
       Messages.sendCommandList(sender);
       return false;
@@ -30,9 +32,6 @@ public class CommandHandler implements CommandExecutor {
         abstractCommand = VoucherCommand.parseCommand(sender, args);
     }
     if (abstractCommand != null) {
-      if (abstractCommand.isSilentErrorCommand()) {
-        return false;
-      }
       abstractCommand.execute();
       return true;
     }

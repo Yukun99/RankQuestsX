@@ -14,7 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class WorldGuardSupport {
-  private static WorldGuardSupport worldGuardSupport = new WorldGuardSupport();
+  private static final WorldGuardSupport worldGuardSupport = new WorldGuardSupport();
   private final WorldGuard wg = WorldGuard.getInstance();
 
   private WorldGuardSupport() {}

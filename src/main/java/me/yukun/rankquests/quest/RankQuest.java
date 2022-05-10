@@ -7,6 +7,7 @@ import me.yukun.rankquests.Main;
 import me.yukun.rankquests.config.Config;
 import me.yukun.rankquests.config.Messages;
 import me.yukun.rankquests.config.Quests;
+import me.yukun.rankquests.config.Redeems;
 import me.yukun.rankquests.exception.InvalidMaterialException;
 import me.yukun.rankquests.hooks.Support;
 import me.yukun.rankquests.inventory.PlayerInventoryHandler;
@@ -30,7 +31,7 @@ public class RankQuest {
   private final List<String> regionList;
   private final List<String> regionBlacklist;
 
-  private Voucher voucher;
+  private final Voucher voucher;
 
   private RankQuest(String name, int duration, List<Boolean> regionCheckToggleList,
                     List<String> regionList, List<String> regionBlacklist) {
@@ -133,6 +134,72 @@ public class RankQuest {
     return nameRankQuestMap.get(rank).voucher;
   }
 
+  public static boolean isCdQuestItem(Player player, ItemStack item) {
+    String rank = playerQuestRankMap.get(player);
+    int time = playerQuestTimeMap.get(player);
+    try {
+      ItemStack cdItem = Quests.getCdQuestItem(rank, player, time);
+      return item.isSimilar(cdItem);
+    } catch (InvalidMaterialException e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
+  /**
+   * Gives a player a specified number of quest items. Input slot = null if you want items to simply
+   * be inserted into first available slot.
+   *
+   * @param player Player to give specified quest item(s) to.
+   * @param rank   Rank of quest item(s) to be given.
+   * @param amount Amount of quest item(s) to be given.
+   */
+  public static void giveQuest(Player player, String rank, int amount, Integer slot) {
+    try {
+      ItemStack quest = Quests.getQuestItem(rank, amount, player);
+      if (slot != null) {
+        player.getInventory().setItem(slot, quest);
+        Messages.sendQuestReceive(player, rank, amount);
+        return;
+      }
+      int overflow = PlayerInventoryHandler.getInventoryOverflowAmount(player, quest);
+      int remain = amount - overflow;
+      Messages.sendQuestReceive(player, rank, remain);
+      if (overflow != 0) {
+        Redeems.addQuest(player, rank, overflow);
+        quest.setAmount(remain);
+        Messages.sendInventoryFull(player);
+      }
+      player.getInventory().addItem(quest);
+    } catch (InvalidMaterialException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Gives a player a specified number of quest items from the player's possible redeemed items.
+   *
+   * @param player Player to give specified quest item(s) to.
+   * @param rank   Rank of quest item(s) to be given.
+   * @param amount Amount of quest item(s) to be given.
+   */
+  public static void giveRedeemedQuest(Player player, String rank, int amount) {
+    try {
+      ItemStack quest = Quests.getQuestItem(rank, amount, player);
+      int overflow = PlayerInventoryHandler.getInventoryOverflowAmount(player, quest);
+      int remain = amount - overflow;
+      Messages.sendQuestReceive(player, rank, remain);
+      Redeems.setQuest(player, rank, overflow);
+      if (overflow != 0) {
+        quest.setAmount(remain);
+        Messages.sendInventoryFull(player);
+      }
+      player.getInventory().addItem(quest);
+    } catch (InvalidMaterialException e) {
+      e.printStackTrace();
+    }
+  }
+
   /**
    * Starts a rank quest for specified player.
    *
@@ -146,19 +213,16 @@ public class RankQuest {
       playerQuestSlotMap.put(player, slot);
       player.getInventory().setItem(slot, startItem);
       playerQuestRankMap.put(player, name);
-      int timer = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
-        @Override
-        public void run() {
-          if (!Support.canStartRankQuest(player, regionCheckToggleList, regionList,
-              regionBlacklist)) {
-            interruptQuest(player, false);
-            return;
-          }
-          if (playerQuestTimeMap.get(player) > 0) {
-            updateQuest(player);
-          } else {
-            stopQuest(player);
-          }
+      int timer = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), () -> {
+        if (!Support.canStartRankQuest(player, regionCheckToggleList, regionList,
+            regionBlacklist)) {
+          interruptQuest(player, false);
+          return;
+        }
+        if (playerQuestTimeMap.get(player) > 0) {
+          updateQuest(player);
+        } else {
+          stopQuest(player);
         }
       }, 20, 20);
       playerQuestTimerMap.put(player, timer);
@@ -193,52 +257,12 @@ public class RankQuest {
   }
 
   private void stopQuest(Player player) {
-    voucher.giveVoucher(player, name, 1, playerQuestSlotMap.get(player));
+    Voucher.giveVoucher(player, name, 1, playerQuestSlotMap.get(player));
     Bukkit.getScheduler().cancelTask(playerQuestTimerMap.get(player));
     playerQuestTimerMap.remove(player);
     playerQuestTimeMap.remove(player);
     playerQuestSlotMap.remove(player);
     playerQuestRankMap.remove(player);
     Messages.announceComplete(player, name);
-  }
-
-  public static boolean isCdQuestItem(Player player, ItemStack item) {
-    String rank = playerQuestRankMap.get(player);
-    int time = playerQuestTimeMap.get(player);
-    try {
-      ItemStack cdItem = Quests.getCdQuestItem(rank, player, time);
-      return item.isSimilar(cdItem);
-    } catch (InvalidMaterialException e) {
-      e.printStackTrace();
-    }
-    return false;
-  }
-
-  /**
-   * Gives a player a specified number of quest items. Input slot = null if you want items to simply
-   * be inserted into first available slot.
-   *
-   * @param player Player to give specified quest item(s) to.
-   * @param rank   Rank of quest item(s) to be given.
-   * @param amount Amount of quest item(s) to be given.
-   */
-  public static void giveQuest(Player player, String rank, int amount, Integer slot) {
-    try {
-      ItemStack quest = Quests.getQuestItem(rank, amount, player);
-      if (slot != null) {
-        player.getInventory().setItem(slot, quest);
-        Messages.sendQuestReceive(player, rank, amount);
-        return;
-      }
-      if (PlayerInventoryHandler.getInventoryOverflowAmount(player, quest) == 0) {
-        player.getInventory().addItem(quest);
-        Messages.sendQuestReceive(player, rank, amount);
-      } else {
-        // TODO - REDEEMS STUFF
-        Messages.sendInventoryFull(player);
-      }
-    } catch (InvalidMaterialException e) {
-      e.printStackTrace();
-    }
   }
 }

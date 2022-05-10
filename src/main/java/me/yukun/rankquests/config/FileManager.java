@@ -29,8 +29,6 @@ public class FileManager {
   protected File mfile;
   protected FileConfiguration redeems;
   protected File rfile;
-  protected FileConfiguration loggers;
-  protected File lfile;
   protected FileConfiguration quests;
   protected File qfile;
 
@@ -45,8 +43,6 @@ public class FileManager {
     messages = YamlConfiguration.loadConfiguration(mfile);
     rfile = createFile("Redeems.yml");
     redeems = YamlConfiguration.loadConfiguration(rfile);
-    lfile = createFile("Loggers.yml");
-    loggers = YamlConfiguration.loadConfiguration(lfile);
     qfile = createFile("Quests.yml");
     quests = YamlConfiguration.loadConfiguration(qfile);
   }
@@ -92,7 +88,7 @@ public class FileManager {
     System.out.println(TextFormatter.color(DEFAULT_PREFIX + filename + FILE_NOT_CREATED));
   }
 
-  protected void saveConfig() {
+  protected void saveConfig(FileConfiguration config) {
     try {
       config.save(cfile);
     } catch (IOException e) {
@@ -100,7 +96,7 @@ public class FileManager {
     }
   }
 
-  protected void saveMessages() {
+  protected void saveMessages(FileConfiguration messages) {
     try {
       messages.save(mfile);
     } catch (IOException e) {
@@ -108,7 +104,7 @@ public class FileManager {
     }
   }
 
-  protected void saveRedeems() {
+  protected void saveRedeems(FileConfiguration redeems) {
     try {
       redeems.save(rfile);
     } catch (IOException e) {
@@ -116,15 +112,7 @@ public class FileManager {
     }
   }
 
-  protected void saveLoggers() {
-    try {
-      loggers.save(lfile);
-    } catch (IOException e) {
-      Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save Loggers.yml!");
-    }
-  }
-
-  protected void saveQuests() {
+  protected void saveQuests(FileConfiguration quests) {
     try {
       quests.save(qfile);
     } catch (IOException e) {
@@ -132,24 +120,24 @@ public class FileManager {
     }
   }
 
-  protected void reloadConfig() {
+  protected FileConfiguration reloadConfig() {
     config = YamlConfiguration.loadConfiguration(cfile);
+    return config;
   }
 
-  protected void reloadMessages() {
+  protected FileConfiguration reloadMessages() {
     messages = YamlConfiguration.loadConfiguration(mfile);
+    return messages;
   }
 
-  protected void reloadRedeems() {
+  protected FileConfiguration reloadRedeems() {
     redeems = YamlConfiguration.loadConfiguration(rfile);
+    return redeems;
   }
 
-  protected void reloadLoggers() {
-    loggers = YamlConfiguration.loadConfiguration(lfile);
-  }
-
-  protected void reloadQuests() {
+  protected FileConfiguration reloadQuests() {
     quests = YamlConfiguration.loadConfiguration(qfile);
+    return quests;
   }
 
   /**
