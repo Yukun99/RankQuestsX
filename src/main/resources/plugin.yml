@@ -1,7 +1,7 @@
 name: RankQuests
 author: Yukun
 main: me.yukun.rankquests.Main
-version: 2.0.0a
+version: 2.0.1
 api-version: 1.13
 softdepend: [ Vault, Factions, WorldGuard, WorldEdit ]
 description: >
