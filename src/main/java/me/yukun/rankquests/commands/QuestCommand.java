@@ -87,6 +87,10 @@ public class QuestCommand extends AbstractCommand {
 
   @Override
   public void execute() {
+    if (!sender.hasPermission("rankquest.quest") && !sender.hasPermission("rankquest.admin")
+        && !sender.hasPermission("rankquest.*") && !sender.isOp()) {
+      return;
+    }
     if (errorType != null) {
       Messages.sendError(super.sender, errorType);
       return;

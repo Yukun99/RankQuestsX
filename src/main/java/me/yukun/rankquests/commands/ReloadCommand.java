@@ -13,6 +13,10 @@ public class ReloadCommand extends AbstractCommand {
 
   @Override
   public void execute() {
+    if (!sender.hasPermission("rankquest.reload") && !sender.hasPermission("rankquest.admin")
+        && !sender.hasPermission("rankquest.*") && !sender.isOp()) {
+      return;
+    }
     Config.reload();
     Messages.reload();
     Quests.reload();

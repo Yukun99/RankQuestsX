@@ -87,6 +87,10 @@ public class VoucherCommand extends AbstractCommand {
 
   @Override
   public void execute() {
+    if (!sender.hasPermission("rankquest.voucher") && !sender.hasPermission("rankquest.admin")
+        && !sender.hasPermission("rankquest.*") && !sender.isOp()) {
+      return;
+    }
     Voucher.giveVoucher(player, rank, amount, null);
   }
 }

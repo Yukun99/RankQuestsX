@@ -16,7 +16,7 @@ public class Messages {
   private static final String USAGE_LIST = "/rankquest list";
   private static final String USAGE_REDEEM = "/rankquest redeem";
   private static final String USAGE_RELOAD = "/rankquest reload";
-  private static final String USAGE_GIVE = "/rankquest quest [player] (rank) [amount]";
+  private static final String USAGE_QUEST = "/rankquest quest [player] (rank) [amount]";
   private static final String USAGE_VOUCHER = "/rankquest voucher [player] (rank) [amount]";
   private static final String HELP_FOOTER = "&b&l=======================================";
   // Quest List Messages
@@ -173,10 +173,22 @@ public class Messages {
   public static void sendCommandList(CommandSender sender) {
     sender.sendMessage(TextFormatter.color(HELP_HEADER));
     sender.sendMessage(TextFormatter.color(HELP_HEADER2));
-    sender.sendMessage(TextFormatter.color(USAGE_LIST));
-    sender.sendMessage(TextFormatter.color(USAGE_GIVE));
-    sender.sendMessage(TextFormatter.color(USAGE_VOUCHER));
-    sender.sendMessage(TextFormatter.color(USAGE_RELOAD));
+    if (sender.hasPermission("rankquest.list") || sender.hasPermission("rankquest.admin")
+        || sender.hasPermission("rankquest.*")) {
+      sender.sendMessage(TextFormatter.color(USAGE_LIST));
+    }
+    if (sender.hasPermission("rankquest.quest") || sender.hasPermission("rankquest.admin")
+        || sender.hasPermission("rankquest.*") || sender.isOp()) {
+      sender.sendMessage(TextFormatter.color(USAGE_QUEST));
+    }
+    if (sender.hasPermission("rankquest.voucher") || sender.hasPermission("rankquest.admin")
+        || sender.hasPermission("rankquest.*") || sender.isOp()) {
+      sender.sendMessage(TextFormatter.color(USAGE_VOUCHER));
+    }
+    if (sender.hasPermission("rankquest.reload") || sender.hasPermission("rankquest.admin")
+        || sender.hasPermission("rankquest.*") || sender.isOp()) {
+      sender.sendMessage(TextFormatter.color(USAGE_RELOAD));
+    }
     sender.sendMessage(TextFormatter.color(USAGE_REDEEM));
     sender.sendMessage(TextFormatter.color(HELP_FOOTER));
   }

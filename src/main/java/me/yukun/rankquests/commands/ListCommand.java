@@ -10,6 +10,10 @@ public class ListCommand extends AbstractCommand {
 
   @Override
   public void execute() {
+    if (!sender.hasPermission("rankquest.list") && !sender.hasPermission("rankquest.admin")
+        && !sender.hasPermission("rankquest.*") && !sender.isOp()) {
+      return;
+    }
     Messages.sendQuestList(sender);
   }
 }
