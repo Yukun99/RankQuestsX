@@ -24,7 +24,7 @@ public class VoucherEvents implements Listener {
     }
     e.setCancelled(true);
     handItem.setAmount(handItem.getAmount() - 1);
-    RankQuest.getVoucher(rank).runCommands();
+    RankQuest.getVoucher(rank).runCommands(player);
     Messages.sendVoucherUse(player, rank);
   }
 }

@@ -95,9 +95,11 @@ public class Voucher {
   /**
    * Run commands from the voucher.
    */
-  public void runCommands() {
+  public void runCommands(Player player) {
     for (String command : voucherCommandList) {
-      Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+      String parsed = command;
+      parsed = parsed.replaceAll("%player%", player.getName());
+      Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), parsed);
     }
   }
 }
