@@ -7,12 +7,11 @@ import me.yukun.rankquests.quest.QuestEvents;
 import me.yukun.rankquests.quest.RankQuest;
 import me.yukun.rankquests.voucher.VoucherEvents;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin implements Listener {
+public class Main extends JavaPlugin {
   private static Plugin rankQuests = null;
 
   public static Plugin getPlugin() {
@@ -29,7 +28,6 @@ public class Main extends JavaPlugin implements Listener {
 
     // Setting up listeners
     PluginManager pm = Bukkit.getServer().getPluginManager();
-    pm.registerEvents(this, this);
     pm.registerEvents(new QuestEvents(), this);
     pm.registerEvents(new VoucherEvents(), this);
   }
