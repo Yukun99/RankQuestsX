@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class Messages {
+
   private static FileConfiguration messageFile = FileManager.getInstance().messages;
   // Command Help Messages
   private static final String HELP_HEADER = "&b&l==========RankQuests Commands==========";
@@ -78,6 +79,7 @@ public class Messages {
     return messageFile.getStringList(path);
   }
 
+  @SuppressWarnings("SameParameterValue")
   private static boolean getBoolean(String path) {
     return messageFile.getBoolean(path);
   }

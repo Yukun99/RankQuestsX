@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
  * Class that manages configuration file I/O.
  */
 public class FileManager {
+
   // Prefix to be used before config files are loaded.
   private static final String DEFAULT_PREFIX = "[RankQuests] ";
   // Configuration related debug messages.
@@ -74,6 +75,7 @@ public class FileManager {
         InputStream E = getClass().getResourceAsStream("/" + filename);
         copyFile(E, en);
       } catch (Exception e) {
+        //noinspection CallToPrintStackTrace
         e.printStackTrace();
       }
     }
@@ -88,35 +90,11 @@ public class FileManager {
     System.out.println(TextFormatter.color(DEFAULT_PREFIX + filename + FILE_NOT_CREATED));
   }
 
-  protected void saveConfig(FileConfiguration config) {
-    try {
-      config.save(cfile);
-    } catch (IOException e) {
-      Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save Config.yml!");
-    }
-  }
-
-  protected void saveMessages(FileConfiguration messages) {
-    try {
-      messages.save(mfile);
-    } catch (IOException e) {
-      Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save Messages.yml!");
-    }
-  }
-
   protected void saveRedeems(FileConfiguration redeems) {
     try {
       redeems.save(rfile);
     } catch (IOException e) {
       Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save Redeems.yml!");
-    }
-  }
-
-  protected void saveQuests(FileConfiguration quests) {
-    try {
-      quests.save(qfile);
-    } catch (IOException e) {
-      Bukkit.getServer().getLogger().severe(ChatColor.RED + "Could not save Quests.yml!");
     }
   }
 
@@ -141,8 +119,8 @@ public class FileManager {
   }
 
   /**
-   * Copies files from inside the jar to outside. Adapted from https://bukkit
-   * .org/threads/extracting-file-from-jar.16962/
+   * Copies files from inside the jar to outside. Adapted from
+   * <a href="https://bukkit.org/threads/extracting-file-from-jar.16962/">this thread</a>.
    *
    * @param in  Where to copy file from.
    * @param out Where to copy file to.

@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class VoucherEvents implements Listener {
+
   @EventHandler
   public void voucherUseEvent(PlayerInteractEvent e) {
     if (!e.getAction().equals(Action.RIGHT_CLICK_AIR)

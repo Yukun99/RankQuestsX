@@ -2,16 +2,8 @@ package me.yukun.rankquests.inventory;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 public class PlayerInventoryHandler {
-  public static ItemStack getItemInHand(PlayerInventory inventory) {
-    return inventory.getItemInMainHand();
-  }
-
-  public static void setItemInHand(PlayerInventory inventory, ItemStack item) {
-    inventory.setItemInMainHand(item);
-  }
 
   /**
    * Gets amount of item that overflows when given to the player. If inventory can receive all of

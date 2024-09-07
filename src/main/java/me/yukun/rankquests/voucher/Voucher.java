@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Voucher {
+
   private final List<String> voucherCommandList;
 
   public Voucher(String rank) {
@@ -32,6 +33,7 @@ public class Voucher {
         }
       }
     } catch (InvalidMaterialException e) {
+      //noinspection CallToPrintStackTrace
       e.printStackTrace();
     }
     return null;
@@ -64,6 +66,7 @@ public class Voucher {
       }
       player.getInventory().addItem(voucher);
     } catch (InvalidMaterialException e) {
+      //noinspection CallToPrintStackTrace
       e.printStackTrace();
     }
   }
@@ -88,6 +91,7 @@ public class Voucher {
       }
       player.getInventory().addItem(voucher);
     } catch (InvalidMaterialException e) {
+      //noinspection CallToPrintStackTrace
       e.printStackTrace();
     }
   }

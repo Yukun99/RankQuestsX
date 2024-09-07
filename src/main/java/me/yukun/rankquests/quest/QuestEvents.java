@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class QuestEvents implements Listener {
+
   @EventHandler
   public void questStartListener(PlayerInteractEvent e) {
     if (!e.getAction().equals(Action.RIGHT_CLICK_AIR)

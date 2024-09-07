@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class Quests {
+
   private static FileConfiguration questsFile = FileManager.getInstance().quests;
 
   public static void reload() {
@@ -139,7 +140,7 @@ public class Quests {
   }
 
   public static String getFormattedString(String message, String rank, Player player,
-                                          Integer time) {
+      Integer time) {
     String result = message.replaceAll("%rank%", getFormattedRank(rank));
     if (player != null) {
       result = Messages.replacePlayerName(result, player);
@@ -170,7 +171,7 @@ public class Quests {
     return questsFile.getInt(path);
   }
 
-  @SuppressWarnings("ConstantConditions")
+  @SuppressWarnings({"ConstantConditions", "SameParameterValue"})
   private static List<String> getConfigurationSection(String path) {
     if (!questsFile.isConfigurationSection(path)) {
       return new ArrayList<>();

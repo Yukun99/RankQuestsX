@@ -7,9 +7,10 @@ import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class CommandHandler implements CommandExecutor {
+
   @Override
   public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command,
-                           @NonNull String label, String[] args) {
+      @NonNull String label, String[] args) {
     if (args.length == 0) {
       Messages.sendCommandList(sender);
       return false;

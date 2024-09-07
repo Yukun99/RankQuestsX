@@ -3,6 +3,7 @@ package me.yukun.rankquests.config;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
+
   private static FileConfiguration configFile = FileManager.getInstance().config;
 
   public static void reload() {

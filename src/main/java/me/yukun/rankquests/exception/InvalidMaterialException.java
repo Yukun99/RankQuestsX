@@ -1,6 +1,7 @@
 package me.yukun.rankquests.exception;
 
 public class InvalidMaterialException extends Exception {
+
   private final String filename;
   private final String path;
 

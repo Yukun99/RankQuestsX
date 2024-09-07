@@ -1,9 +1,9 @@
 name: RankQuests
 author: Yukun
-main: me.yukun.rankquests.Main
-version: 2.0.1
+main: me.yukun.rankquests.RankQuests
+version: 2.0.3
 api-version: 1.13
-softdepend: [ Vault, Factions, WorldGuard, WorldEdit ]
+softdepend: [ Factions, WorldGuard ]
 description: >
   A plugin to make players complete a timed quest before they receive a rank.
 commands:

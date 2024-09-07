@@ -4,6 +4,7 @@ import me.yukun.rankquests.config.Messages;
 import org.bukkit.command.CommandSender;
 
 public class ListCommand extends AbstractCommand {
+
   public ListCommand(CommandSender sender) {
     super(sender);
   }

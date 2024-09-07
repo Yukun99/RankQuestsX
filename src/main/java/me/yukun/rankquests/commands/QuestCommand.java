@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class QuestCommand extends AbstractCommand {
+
   private final Player player;
   private final String rank;
   private final int amount;
@@ -77,6 +78,7 @@ public class QuestCommand extends AbstractCommand {
     }
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private static boolean isValidAmount(String argument) {
     if (!isInt(argument)) {
       return false;

@@ -7,6 +7,7 @@ import me.yukun.rankquests.config.Redeems;
 import org.bukkit.command.CommandSender;
 
 public class ReloadCommand extends AbstractCommand {
+
   public ReloadCommand(CommandSender sender) {
     super(sender);
   }

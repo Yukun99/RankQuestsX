@@ -11,7 +11,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin {
+public class RankQuests extends JavaPlugin {
+
   private static Plugin rankQuests = null;
 
   public static Plugin getPlugin() {
@@ -23,7 +24,7 @@ public class Main extends JavaPlugin {
     // Setting up general stuff
     FileManager.createInstance(this);
     RankQuest.onEnable();
-    rankQuests = Bukkit.getPluginManager().getPlugin("RankQuests");
+    rankQuests = JavaPlugin.getPlugin(RankQuests.class);
     Objects.requireNonNull(getCommand("rankquest")).setExecutor(new CommandHandler());
 
     // Setting up listeners

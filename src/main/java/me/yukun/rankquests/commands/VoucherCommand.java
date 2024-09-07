@@ -1,6 +1,5 @@
 package me.yukun.rankquests.commands;
 
-import me.yukun.rankquests.config.Messages;
 import me.yukun.rankquests.config.Quests;
 import me.yukun.rankquests.voucher.Voucher;
 import org.bukkit.Bukkit;
@@ -8,10 +7,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class VoucherCommand extends AbstractCommand {
+
   private final Player player;
   private final String rank;
   private final int amount;
-  private Messages.ErrorType errorType = null;
 
   public VoucherCommand(CommandSender sender, Player player, String rank, int amount) {
     super(sender);
@@ -20,11 +19,8 @@ public class VoucherCommand extends AbstractCommand {
     this.amount = amount;
   }
 
-  private static VoucherCommand getErrorCommand(CommandSender sender,
-                                                Messages.ErrorType errorType) {
-    VoucherCommand errorCommand = new VoucherCommand(sender, null, null, -1);
-    errorCommand.errorType = errorType;
-    return errorCommand;
+  private static VoucherCommand getErrorCommand(CommandSender sender) {
+    return new VoucherCommand(sender, null, null, -1);
   }
 
   public static AbstractCommand parseCommand(CommandSender sender, String[] args) {
@@ -34,7 +30,7 @@ public class VoucherCommand extends AbstractCommand {
       case 2:
         if (Quests.getAllRanks().contains(args[1])) {
           if (!(sender instanceof Player)) {
-            return getErrorCommand(sender, Messages.ErrorType.SENDER);
+            return getErrorCommand(sender);
           }
           Player player = (Player) sender;
           String rank = args[1];
@@ -44,10 +40,10 @@ public class VoucherCommand extends AbstractCommand {
       case 3:
         if (Quests.getAllRanks().contains(args[1])) {
           if (!(sender instanceof Player)) {
-            return getErrorCommand(sender, Messages.ErrorType.SENDER);
+            return getErrorCommand(sender);
           }
           if (!isValidAmount(args[2])) {
-            return getErrorCommand(sender, Messages.ErrorType.AMOUNT);
+            return getErrorCommand(sender);
           }
           Player player = (Player) sender;
           String rank = args[1];
@@ -56,7 +52,7 @@ public class VoucherCommand extends AbstractCommand {
         }
         if (Quests.getAllRanks().contains(args[2])) {
           if (Bukkit.getPlayer(args[1]) == null) {
-            return getErrorCommand(sender, Messages.ErrorType.PLAYER);
+            return getErrorCommand(sender);
           }
           Player player = Bukkit.getPlayer(args[1]);
           String rank = args[2];
@@ -65,10 +61,10 @@ public class VoucherCommand extends AbstractCommand {
         }
       default:
         if (!isValidAmount(args[3])) {
-          return getErrorCommand(sender, Messages.ErrorType.AMOUNT);
+          return getErrorCommand(sender);
         }
         if (Bukkit.getPlayer(args[1]) == null) {
-          return getErrorCommand(sender, Messages.ErrorType.PLAYER);
+          return getErrorCommand(sender);
         }
         Player player = Bukkit.getPlayer(args[1]);
         String rank = args[2];
@@ -77,6 +73,7 @@ public class VoucherCommand extends AbstractCommand {
     }
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   private static boolean isValidAmount(String argument) {
     if (!isInt(argument)) {
       return false;

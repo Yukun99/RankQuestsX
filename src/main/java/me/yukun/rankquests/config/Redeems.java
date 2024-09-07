@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class Redeems {
+
   private static FileConfiguration redeemsFile = FileManager.getInstance().redeems;
 
   public static void reload() {

@@ -3,13 +3,13 @@ package me.yukun.rankquests.quest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import me.yukun.rankquests.Main;
+import me.yukun.rankquests.RankQuests;
 import me.yukun.rankquests.config.Config;
 import me.yukun.rankquests.config.Messages;
 import me.yukun.rankquests.config.Quests;
 import me.yukun.rankquests.config.Redeems;
 import me.yukun.rankquests.exception.InvalidMaterialException;
-import me.yukun.rankquests.hooks.Support;
+import me.yukun.rankquests.hooks.SupportManager;
 import me.yukun.rankquests.inventory.PlayerInventoryHandler;
 import me.yukun.rankquests.voucher.Voucher;
 import org.bukkit.Bukkit;
@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class RankQuest {
+
   public static final Map<String, RankQuest> nameRankQuestMap = new HashMap<>();
   private static final Map<Player, Integer> playerQuestSlotMap = new HashMap<>();
   private static final Map<Player, Integer> playerQuestTimeMap = new HashMap<>();
@@ -34,7 +35,7 @@ public class RankQuest {
   private final Voucher voucher;
 
   private RankQuest(String name, int duration, List<Boolean> regionCheckToggleList,
-                    List<String> regionList, List<String> regionBlacklist) {
+      List<String> regionList, List<String> regionBlacklist) {
     this.name = name;
     this.duration = duration;
     this.regionCheckToggleList = regionCheckToggleList;
@@ -76,6 +77,7 @@ public class RankQuest {
     try {
       questItem = Quests.getQuestItem(rank, 1, player);
     } catch (InvalidMaterialException e) {
+      //noinspection CallToPrintStackTrace
       e.printStackTrace();
     }
     return item.isSimilar(questItem);
@@ -120,6 +122,7 @@ public class RankQuest {
     try {
       questItem = Quests.getQuestItem(rank, 1, player);
     } catch (InvalidMaterialException e) {
+      //noinspection CallToPrintStackTrace
       e.printStackTrace();
     }
     if (doDropQuest) {
@@ -141,6 +144,7 @@ public class RankQuest {
       ItemStack cdItem = Quests.getCdQuestItem(rank, player, time);
       return item.isSimilar(cdItem);
     } catch (InvalidMaterialException e) {
+      //noinspection CallToPrintStackTrace
       e.printStackTrace();
     }
     return false;
@@ -172,6 +176,7 @@ public class RankQuest {
       }
       player.getInventory().addItem(quest);
     } catch (InvalidMaterialException e) {
+      //noinspection CallToPrintStackTrace
       e.printStackTrace();
     }
   }
@@ -196,6 +201,7 @@ public class RankQuest {
       }
       player.getInventory().addItem(quest);
     } catch (InvalidMaterialException e) {
+      //noinspection CallToPrintStackTrace
       e.printStackTrace();
     }
   }
@@ -213,8 +219,8 @@ public class RankQuest {
       playerQuestSlotMap.put(player, slot);
       player.getInventory().setItem(slot, startItem);
       playerQuestRankMap.put(player, name);
-      int timer = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), () -> {
-        if (!Support.canStartRankQuest(player, regionCheckToggleList, regionList,
+      int timer = Bukkit.getScheduler().scheduleSyncRepeatingTask(RankQuests.getPlugin(), () -> {
+        if (!SupportManager.canStartRankQuest(player, regionCheckToggleList, regionList,
             regionBlacklist)) {
           interruptQuest(player, false);
           return;
@@ -232,6 +238,7 @@ public class RankQuest {
       }
       Messages.announceBegin(player, name);
     } catch (InvalidMaterialException e) {
+      //noinspection CallToPrintStackTrace
       e.printStackTrace();
     }
   }
@@ -243,7 +250,8 @@ public class RankQuest {
    * @return Whether specified player is in the valid region to do the rank quest.
    */
   public boolean isInValidRegion(Player player) {
-    return Support.canStartRankQuest(player, regionCheckToggleList, regionList, regionBlacklist);
+    return SupportManager.canStartRankQuest(player, regionCheckToggleList, regionList,
+        regionBlacklist);
   }
 
   private void updateQuest(Player player) {
@@ -252,6 +260,7 @@ public class RankQuest {
       ItemStack nextItem = Quests.getCdQuestItem(name, player, playerQuestTimeMap.get(player));
       player.getInventory().setItem(playerQuestSlotMap.get(player), nextItem);
     } catch (InvalidMaterialException e) {
+      //noinspection CallToPrintStackTrace
       e.printStackTrace();
     }
   }
